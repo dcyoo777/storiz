@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
+import { signInAction } from "./actions/signIn";
+import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +31,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <header className="flex items-center gap-8 border-b p-4">
+          <h1 className="text-xl font-bold">Storiz</h1>
+          <nav className="flex items-center gap-4">
+            <Link href="/">Home</Link>
+            <Link href="/new">New Story</Link>
+          </nav>
+          <Button onClick={signInAction}>Sign In</Button>
+        </header>
         {children}
+        <footer className="border-t p-4 text-center">footer</footer>
+        <Toaster />
       </body>
     </html>
   );
