@@ -1,7 +1,6 @@
+import { signInAction, signOutAction } from "@/actions/authAction";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { signInAction } from "@/app/actions/signIn";
-import { signOutAction } from "@/app/actions/signOut";
 import Image from "next/image";
 
 export async function HeaderAuth() {
@@ -15,6 +14,8 @@ export async function HeaderAuth() {
     );
   }
 
+  console.log("HeaderAuth Session :: ", session);
+
   return (
     <div className="flex items-center gap-4">
       <div className="flex items-center gap-2">
@@ -27,7 +28,9 @@ export async function HeaderAuth() {
             className="rounded-full"
           />
         )}
-        <span className="text-sm">{session.user.name || session.user.email}</span>
+        <span className="text-sm">
+          {session.user.name || session.user.email}
+        </span>
       </div>
       <form action={signOutAction}>
         <Button type="submit" variant="outline">

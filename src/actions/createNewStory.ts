@@ -21,17 +21,24 @@ export const createNewStoryAction = async (
     throw new Error("Unauthorized: You must be logged in to create a story");
   }
 
-  console.log(values);
-  console.log(`${process.env.DATABASE_URL}`);
-
   // Connect to the Neon database
   const sql = neon(`${process.env.DATABASE_URL}`);
+
+  const userQuery = await sql`
+    SELECT id FROM users WHERE email = ${session.user.email}
+  `;
+
+  if (!userQuery || userQuery.length === 0) {
+    throw new Error("User not found in database");
+  }
+
+  const actualUserId = userQuery[0].id;
   const { title, description, startAt, endAt } = values;
 
-  // Tagged Template Literal 방식 - use authenticated user ID
+  // Use actual database user ID
   const result = await sql`
         INSERT INTO stories (title, description, start_at, end_at, user_id) 
-        VALUES (${title}, ${description}, ${dayjs(startAt).utc().toISOString()}, ${dayjs(endAt).utc().toISOString()}, ${session.user.id}) 
+        VALUES (${title}, ${description}, ${dayjs(startAt).utc().toISOString()}, ${dayjs(endAt).utc().toISOString()}, ${actualUserId}) 
         RETURNING id
     `;
 

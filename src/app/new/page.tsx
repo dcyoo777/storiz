@@ -15,8 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import DateTimePicker from "@/components/custom/datetimepicker";
-import { createNewStoryAction } from "../actions/createNewStory";
-import { storyFormSchema } from "../schema/storySchema";
+import { createNewStoryAction } from "@/actions/createNewStory";
+import { storyFormSchema } from "../../schema/storySchema";
 import { get5MinuteFormat } from "@/lib/timeUtil";
 import { toast } from "sonner";
 

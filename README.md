@@ -1,202 +1,149 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Storiz 📚
 
-## Features
+일상의 이야기를 시간순으로 기록하고 관리할 수 있는 모던한 스토리 관리 애플리케이션입니다.
 
-- Google OAuth authentication with NextAuth.js 5.0
-- User management with Neon PostgreSQL database
-- Story creation and management
-- Session-based authentication
+## ✨ 주요 기능
 
-## Prerequisites
+- **스토리 생성**: 제목, 설명, 시간 범위와 함께 스토리 작성
+- **시간 관리**: 사용자 친화적인 날짜/시간 선택기로 스토리의 시작과 끝 시간 설정
+- **구글 인증**: 구글 OAuth를 통한 안전한 로그인
+- **모던 UI**: Tailwind CSS와 shadcn/ui 컴포넌트로 구성된 세련된 인터페이스
+- **데이터베이스 연동**: Neon PostgreSQL 데이터베이스 활용
+- **반응형 디자인**: 데스크톱과 모바일에서 완벽하게 작동
 
-- Node.js 18+ installed
-- A Neon PostgreSQL database account
-- Google OAuth credentials
+## 🛠️ 기술 스택
 
-## Setup Instructions
+- **프레임워크**: Next.js 15.5.2 (React 19)
+- **인증**: NextAuth.js (구글 프로바이더)
+- **데이터베이스**: Neon PostgreSQL
+- **스타일링**: Tailwind CSS v4, shadcn/ui
+- **폼 관리**: React Hook Form + Zod 검증
+- **날짜/시간**: dayjs
 
-### 1. Install Dependencies
+## 🚀 시작하기
 
-```bash
-npm install
-```
+### 필요 조건
 
-### 2. Database Setup
+- Node.js 18+ 및 npm/yarn
+- 구글 OAuth 인증 정보
+- 데이터베이스 연결 문자열
 
-1. Create a Neon PostgreSQL database at [neon.tech](https://neon.tech)
-2. Run the SQL schema from `schema.sql` in your Neon console to create the required tables:
-   - `users` table for storing user information
-   - `stories` table for storing user stories
+### 설치 방법
 
-### 3. Google OAuth Setup
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Enable the Google+ API
-4. Go to "Credentials" → "Create Credentials" → "OAuth 2.0 Client ID"
-5. Configure the OAuth consent screen
-6. For "Authorized redirect URIs", add:
-   - Development: `http://localhost:3000/api/auth/callback/google`
-   - Production: `https://yourdomain.com/api/auth/callback/google`
-7. Copy the Client ID and Client Secret
-
-### 4. Environment Variables
-
-1. Copy `.env.example` to `.env.local`:
+1. **저장소 복제**
    ```bash
-   cp .env.example .env.local
+   git clone https://github.com/dcyoo777/storiz.git
+   cd storiz
    ```
 
-2. Fill in the environment variables:
-   ```env
-   # Generate with: openssl rand -base64 32
-   AUTH_SECRET=your-generated-secret-here
-   
-   # For development
-   AUTH_URL=http://localhost:3000
-   
-   # From Google Cloud Console
-   AUTH_GOOGLE_ID=your-google-client-id
-   AUTH_GOOGLE_CLIENT_SECRET=your-google-client-secret
-   
-   # From Neon dashboard
-   DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+2. **의존성 설치**
+   ```bash
+   npm install
    ```
 
-### 5. Generate AUTH_SECRET
+3. **환경 변수 설정**
+   
+   루트 디렉토리에 `.env.local` 파일을 생성하고 필요한 환경 변수를 설정하세요.
+   
 
-Run this command to generate a secure secret:
-```bash
-openssl rand -base64 32
-```
+4. **데이터베이스 설정**
+   
+   데이터베이스에 다음 테이블을 생성하세요
 
-## Getting Started
 
-First, run the development server:
+5. **개발 서버 실행**
+   ```bash
+   npm run dev
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어주세요.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📱 사용 방법
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 스토리 작성하기
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. 홈페이지에서 "Create New" 버튼 클릭
+2. 스토리 폼 작성:
+   - **제목**: 스토리의 제목을 입력
+   - **설명**: 스토리에 대한 상세 설명 (선택사항)
+   - **시작 시간**: 스토리가 시작된 시간
+   - **종료 시간**: 스토리가 끝난 시간
+3. "등록하기" 버튼을 클릭하여 스토리 저장
 
-## Usage
+### 로그인
 
-### Authentication
+- 헤더의 "Sign In" 버튼 클릭
+- 구글 계정으로 인증
+- 로그인 후 스토리 작성 및 관리 가능
 
-- Click "Sign In" in the header to authenticate with Google
-- Once signed in, your profile picture and name will appear in the header
-- Click "Sign Out" to log out
-
-### Creating Stories
-
-1. Navigate to "New Story" from the header
-2. Fill in the story details:
-   - Title (required)
-   - Description (optional)
-   - Start date/time
-   - End date/time
-3. Click "등록하기" to create the story
-4. You must be logged in to create stories
-
-### User Management
-
-The system automatically:
-- Creates a new user record on first login
-- Updates user information (name, profile picture) on each login
-- Associates all stories with the logged-in user
-- Maintains user sessions across page refreshes
-
-## Project Structure
+## 🏗️ 프로젝트 구조
 
 ```
 src/
 ├── app/
-│   ├── actions/
-│   │   ├── createNewStory.ts    # Story creation with auth
-│   │   ├── signIn.ts            # Google sign-in action
-│   │   ├── signOut.ts           # Sign-out action
-│   │   └── userActions.ts       # User database operations
-│   ├── layout.tsx               # Root layout with header
-│   └── new/
-│       └── page.tsx             # Story creation form
-├── auth.ts                      # NextAuth configuration
+│   ├── actions/          # 서버 액션
+│   │   ├── createNewStory.ts
+│   │   └── signIn.ts
+│   ├── api/auth/         # NextAuth API 라우트
+│   ├── new/             # 스토리 생성 페이지
+│   ├── schema/          # Zod 스키마
+│   ├── layout.tsx       # 루트 레이아웃
+│   └── page.tsx         # 홈페이지
 ├── components/
-│   └── custom/
-│       └── HeaderAuth.tsx       # Auth status component
-└── types/
-    └── next-auth.d.ts          # NextAuth type extensions
+│   ├── custom/          # 커스텀 컴포넌트
+│   │   ├── datetimepicker.tsx
+│   │   ├── datepicker.tsx
+│   │   └── Flex.tsx
+│   └── ui/             # shadcn/ui 컴포넌트들
+├── lib/
+│   ├── timeUtil.ts     # 시간 유틸리티 함수
+│   └── utils.ts        # 일반 유틸리티
+├── auth.ts             # NextAuth 설정
+└── middleware.ts       # 인증 미들웨어
 ```
 
-## Database Schema
+## 🔧 개발
 
-### Users Table
-```sql
-- id (TEXT, PRIMARY KEY) - OAuth provider user ID
-- email (TEXT, UNIQUE, NOT NULL)
-- name (TEXT)
-- image (TEXT) - Profile picture URL
-- created_at (TIMESTAMP)
-- updated_at (TIMESTAMP)
-```
+### 사용 가능한 스크립트
 
-### Stories Table
-```sql
-- id (UUID, PRIMARY KEY)
-- title (TEXT, NOT NULL)
-- description (TEXT)
-- start_at (TIMESTAMP, NOT NULL)
-- end_at (TIMESTAMP, NOT NULL)
-- user_id (TEXT, FOREIGN KEY → users.id)
-- created_at (TIMESTAMP)
-- updated_at (TIMESTAMP)
-```
+- `npm run dev` - Turbopack을 사용한 개발 서버 실행
+- `npm run build` - Turbopack을 사용한 프로덕션 빌드
+- `npm start` - 프로덕션 서버 실행
+- `npm run lint` - ESLint 실행
 
-## Troubleshooting
+### 주요 컴포넌트
 
-### redirect_uri_mismatch Error
+- **DateTimePicker**: 5분 간격으로 날짜와 시간을 선택할 수 있는 커스텀 컴포넌트
+- **Story Form**: React Hook Form과 Zod를 사용한 검증 기능이 포함된 종합 폼
+- **Flex Component**: 일관된 flexbox 레이아웃을 위한 유틸리티 컴포넌트
 
-This error occurs when the redirect URI in your Google OAuth settings doesn't match the one being used by NextAuth. Make sure:
+## 🌟 상세 기능
 
-1. The `AUTH_URL` in `.env.local` matches your development/production URL
-2. The authorized redirect URI in Google Cloud Console is: `{AUTH_URL}/api/auth/callback/google`
-3. For local development, use `http://localhost:3000` (not `http://127.0.0.1:3000`)
+### 시간 관리
+- 시간 범위(시작 및 종료 시간)별 스토리 정리
+- 5분 간격 정밀도의 커스텀 날짜/시간 선택기
+- dayjs를 사용한 자동 시간대 처리
 
-### Database Connection Issues
+### 폼 검증
+- Zod 스키마를 사용한 클라이언트 측 검증
+- 실시간 폼 피드백
+- 성공/오류 상태에 대한 토스트 알림
 
-If you see database errors:
-1. Verify your `DATABASE_URL` is correct
-2. Make sure the database tables are created (run `schema.sql`)
-3. Check that your Neon database is active
+### 인증 흐름
+- 구글 OAuth 통합
+- 인증된 라우트에 대한 미들웨어 보호
+- NextAuth.js를 사용한 세션 관리
 
-### Authentication Not Persisting
+## 🤝 기여하기
 
-If you're logged out after refresh:
-1. Make sure `AUTH_SECRET` is set in `.env.local`
-2. Clear your browser cookies and try again
-3. Verify the secret is at least 32 characters
+1. 저장소 포크
+2. 기능 브랜치 생성 (`git checkout -b feature/새로운기능`)
+3. 변경사항 커밋 (`git commit -m '새로운 기능 추가'`)
+4. 브랜치에 푸시 (`git push origin feature/새로운기능`)
+5. Pull Request 생성
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+---
+## 📄 라이선스
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+이 프로젝트는 MIT 라이선스 하에 배포됩니다.

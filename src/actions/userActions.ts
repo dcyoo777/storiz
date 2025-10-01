@@ -42,10 +42,12 @@ export async function findOrCreateUser(
 
   // Create new user
   const newUsers = await sql`
-    INSERT INTO users (id, email, name, image)
-    VALUES (${providerId}, ${email}, ${name}, ${image})
+    INSERT INTO users (email, name, image)
+    VALUES (${email}, ${name}, ${image})
     RETURNING id, email, name, image, created_at, updated_at
   `;
+
+  console.log("Created new user:", newUsers[0]);
 
   return newUsers[0] as User;
 }

@@ -40,7 +40,7 @@ export default function RootLayout({
             <HeaderAuth />
           </div>
         </header>
-        {children}
+        <main>{children}</main>
         <footer className="border-t p-4 text-center">footer</footer>
         <Toaster />
       </body>

@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
-import { findOrCreateUser } from "./app/actions/userActions";
+import { findOrCreateUser } from "@/actions/userActions";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
