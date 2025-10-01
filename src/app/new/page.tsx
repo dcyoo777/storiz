@@ -43,7 +43,13 @@ export function ProfileForm() {
       }
     } catch (error) {
       console.error(error);
-      toast.error("오류가 발생했습니다.");
+      const errorMessage =
+        error instanceof Error ? error.message : "오류가 발생했습니다.";
+      if (errorMessage.includes("Unauthorized")) {
+        toast.error("로그인이 필요합니다. 먼저 로그인해주세요.");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 
