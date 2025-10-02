@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
-import { findOrCreateUser } from "@/actions/userActions";
+import { findOrCreateUser, getUserByEmail } from "@/actions/userActions";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -28,10 +28,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true;
     },
-    async jwt({ token, account }) {
-      // Add the provider account ID to the token on first sign in
-      if (account?.providerAccountId) {
-        token.id = account.providerAccountId;
+    async jwt({ token }) {
+      // 초기 로그인이나 토큰 업데이트 시에만 DB 조회
+      if (token?.email) {
+        try {
+          const dbUser = await getUserByEmail(token.email);
+          if (dbUser) {
+            token.id = dbUser.id;
+            token.email = dbUser.email;
+            token.name = dbUser.name;
+            token.image = dbUser.image;
+            // 필요한 다른 DB 필드들도 추가
+          }
+        } catch (error) {
+          console.error("Error fetching user from database:", error);
+        }
       }
       return token;
     },
@@ -43,7 +54,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
   },
-  pages: {
-    signIn: "/",
-  },
+  // pages: {
+  //   signIn: "/",
+  // },
 });
