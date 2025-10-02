@@ -4,6 +4,7 @@ import "./globals.css";
 import Link from "next/link";
 import { Toaster } from "@/components/ui/sonner";
 import { HeaderAuth } from "@/components/custom/HeaderAuth";
+import { Providers } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="flex items-center gap-8 border-b p-4">
+        {/* <header className="flex items-center gap-8 border-b p-4">
           <h1 className="text-xl font-bold">Storiz</h1>
           <nav className="flex items-center gap-4">
             <Link href="/">Home</Link>
@@ -39,10 +40,12 @@ export default function RootLayout({
           <div className="ml-auto">
             <HeaderAuth />
           </div>
-        </header>
-        <main>{children}</main>
-        <footer className="border-t p-4 text-center">footer</footer>
-        <Toaster />
+        </header> */}
+        <Providers>
+          <main>{children}</main>
+          {/* <footer className="border-t p-4 text-center">footer</footer> */}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

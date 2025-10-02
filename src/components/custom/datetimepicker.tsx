@@ -40,9 +40,9 @@ export default function DatetimePicker({
             <Button
               variant="outline"
               id="date-picker"
-              className="w-32 justify-between font-normal"
+              className="text-md justify-between font-normal"
             >
-              {date ? dayjs(date).format("YYYY.MM.DD") : "날짜 선택"}
+              {date ? dayjs(date).format("YYYY. MM. DD") : "날짜 선택"}
               <ChevronDownIcon />
             </Button>
           </PopoverTrigger>

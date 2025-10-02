@@ -4,36 +4,45 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import DateTimePicker from "@/components/custom/datetimepicker";
-import { createNewStoryAction } from "@/actions/createNewStory";
-import { storyFormSchema } from "../../schema/storySchema";
+import { createNewStoryAction } from "@/actions/story/createNewStory";
 import { get5MinuteFormat } from "@/lib/timeUtil";
 import { toast } from "sonner";
 
-export function ProfileForm() {
-  const form = useForm<z.infer<typeof storyFormSchema>>({
-    resolver: zodResolver(storyFormSchema),
+export const customStoryFormSchema = z.object({
+  title: z.string().min(2, {
+    message: "Title must be at least 2 characters.",
+  }),
+  where: z.string().max(100),
+  with: z.string().max(100),
+  startAt: z.string().min(2).max(100),
+  endAt: z.string().min(2).max(100),
+});
+
+export function StoryForm() {
+  const form = useForm<z.infer<typeof customStoryFormSchema>>({
+    resolver: zodResolver(customStoryFormSchema),
     defaultValues: {
       title: "",
-      description: "",
+      where: "",
+      with: "",
       startAt: get5MinuteFormat(),
       endAt: get5MinuteFormat(),
     },
   });
 
-  const createNewStory = async (values: z.infer<typeof storyFormSchema>) => {
+  const createNewStory = async (
+    values: z.infer<typeof customStoryFormSchema>,
+  ) => {
     try {
-      const result = await createNewStoryAction(values);
+      const result = await createNewStoryAction({
+        title: values.title,
+        description: `${values.where ? `${values.where}에서 ` : ""}${values.with ? `${values.with}와 ` : ""}${values.title}을 했다!`,
+        startAt: values.startAt,
+        endAt: values.endAt,
+      });
 
       if (result && result.length > 0) {
         toast.success("스토리가 성공적으로 등록되었습니다!");
@@ -54,55 +63,25 @@ export function ProfileForm() {
   };
 
   return (
-    <div className="container mx-auto my-10 max-w-md rounded-lg border p-4 shadow">
+    <div className="relative p-4">
+      {/* <div className="rounded-lg border p-4 shadow"> */}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(createNewStory)}
           className="space-y-4"
         >
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>제목</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="있었던 일에 제목을 붙여주세요!"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>설명</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="있었던 일에 설명을 붙여주세요!"
-                    {...field}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="startAt"
-            render={({ field }) => (
-              <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            <FormField
+              control={form.control}
+              name="startAt"
+              render={({ field }) => (
                 <FormControl>
                   <DateTimePicker {...field} />
                 </FormControl>
-                <div>부터</div>
-              </div>
-            )}
-          />
+              )}
+            />
+            <div className="w-fit whitespace-nowrap">부터</div>
+          </div>
           <FormField
             control={form.control}
             name="endAt"
@@ -115,12 +94,47 @@ export function ProfileForm() {
               </div>
             )}
           />
-          <Button className="w-full" type="submit">
+          <div className="flex items-center gap-2">
+            <FormField
+              control={form.control}
+              name="where"
+              render={({ field }) => (
+                <FormControl>
+                  <Input placeholder="어디" {...field} />
+                </FormControl>
+              )}
+            />
+            <div className="w-fit text-right whitespace-nowrap">에서</div>
+            <FormField
+              control={form.control}
+              name="with"
+              render={({ field }) => (
+                <FormControl>
+                  <Input placeholder="누구" {...field} />
+                </FormControl>
+              )}
+            />
+            <div className="w-fit text-right whitespace-nowrap">와</div>
+          </div>
+          <div className="flex items-center gap-2">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormControl>
+                  <Input placeholder="무엇" {...field} />
+                </FormControl>
+              )}
+            />
+            <div className="w-fit text-right whitespace-nowrap">을 했다!</div>
+          </div>
+          <Button className="w-full" size="lg" type="submit">
             등록하기
           </Button>
         </form>
       </Form>
+      {/* </div> */}
     </div>
   );
 }
-export default ProfileForm;
+export default StoryForm;
